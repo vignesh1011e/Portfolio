@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Under Development</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>UNDER DEVELOPMENT 🚧</h1>
+    <p>Our website is currently under maintenance. Stay tuned for updates!</p>
+
+    <form id="notifyForm" class="form">
+      <input type="text" id="name" placeholder="Name" required />
+      <input type="email" id="email" placeholder="Email" required />
+      <button type="submit">Notify</button>
+    </form>
+
+    <p id="statusMsg"></p>
+  </div>
+
+  <footer>
+    © 2025 Under Development Page. Designed by <a href="#">@vigneshwarsharma</a>
+  </footer>
+
+  <!-- Firebase SDK -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+    import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+
+    // Your Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyBO3j0go-z26yMs0i4ZoGMvL8CDk_TjCc4",
+      authDomain: "under-development-site.firebaseapp.com",
+      projectId: "under-development-site",
+      storageBucket: "under-development-site.firebasestorage.app",
+      messagingSenderId: "857836801071",
+      appId: "1:857836801071:web:c3cafbadb9d29d84498ada",
+      measurementId: "G-35Y7MXEXFB"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // Form Submission
+    const form = document.getElementById("notifyForm");
+    const statusMsg = document.getElementById("statusMsg");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const name = document.getElementById("name").value.trim();
+      const email = document.getElementById("email").value.trim();
+
+      if (!name || !email) return;
+
+      try {
+        await addDoc(collection(db, "subscribers"), {
+          name: name,
+          email: email,
+          timestamp: new Date()
+        });
+        statusMsg.textContent = "✅ Thank you! You'll be notified soon.";
+        form.reset();
+      } catch (error) {
+        console.error("Error adding document: ", error);
+        statusMsg.textContent = "❌ Something went wrong. Try again!";
+      }
+    });
+  </script>
+</body>
+</html>
